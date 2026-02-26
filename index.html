@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    <link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Viral Glam Doll Builder</title>
+  <link rel="stylesheet" href="./styles.css?v=8.0.0" />
+</head>
+
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="brand">
+        <div class="logo">✨</div>
+        <div>
+          <div class="brandTitle">Viral Glam Doll Builder</div>
+          <div class="brandSub">Pick your options. Generate prompt. Drop A/B/C variants.</div>
+        </div>
+      </div>
+
+      <div class="topActions">
+        <button type="button" id="clearBtn" class="btn btnGhost">Clear All</button>
+        <button type="button" id="resetBtn" class="btn btnSoft">Reset Defaults</button>
+        <button type="button" id="randBtn" class="btn btnSoft">Randomize</button>
+        <button type="button" id="genBtn" class="btn btnPrimary">Generate</button>
+        <button type="button" id="rand3Btn" class="btn btnPrimary btnGlow">Randomize 3 Styles</button>
+      </div>
+    </header>
+
+    <main class="grid">
+      <section class="left">
+        <div class="panelHeader">
+          <div>
+            <div class="panelTitle">Builder Controls</div>
+            <div class="panelHint">Search sections fast. Click pills. Multi sections allow multiple picks.</div>
+          </div>
+
+          <div class="searchRow">
+            <div class="searchWrap">
+              <span class="searchIcon">🔎</span>
+              <input id="searchInput" class="searchInput" type="text"
+                     placeholder="Search sections (e.g., lashes, bags, fantasy)..." />
+              <button id="searchClear" type="button" class="searchClear" title="Clear search">✕</button>
+            </div>
+            <div id="searchMeta" class="searchMeta">Showing all sections</div>
+          </div>
+        </div>
+
+        <div id="controls" class="controls"></div>
+      </section>
+
+      <aside class="right">
+        <div class="sticky">
+          <div class="outputCard">
+            <div class="outputTop">
+              <div class="outputTitle">Prompt Output</div>
+              <div class="outputBtns">
+                <button type="button" id="copyBtn" class="btn btnSoft">Copy</button>
+              </div>
+            </div>
+            <textarea id="promptOut" class="textarea" placeholder="Your generated prompt will appear here..."></textarea>
+          </div>
+
+          <div class="variants">
+            <div class="variantsHeader">
+              <div>
+                <div class="panelTitle">3 Style Options</div>
+                <div class="panelHint">A/B/C inject style presets while keeping your character choices.</div>
+              </div>
+            </div>
+
+            <div class="variantGrid">
+              <div class="variantCard">
+                <div id="badgeA" class="badge">
+                  <span class="badgeLetter">A</span>
+                  <span class="badgeText">—</span>
+                </div>
+                <textarea id="promptA" class="textarea small" placeholder="Option A prompt..."></textarea>
+                <div class="variantBtns">
+                  <button type="button" class="btn btnSoft" data-copy="A">Copy A</button>
+                  <button type="button" class="btn btnPrimary" data-use="A">Use A</button>
+                </div>
+              </div>
+
+              <div class="variantCard">
+                <div id="badgeB" class="badge">
+                  <span class="badgeLetter">B</span>
+                  <span class="badgeText">—</span>
+                </div>
+                <textarea id="promptB" class="textarea small" placeholder="Option B prompt..."></textarea>
+                <div class="variantBtns">
+                  <button type="button" class="btn btnSoft" data-copy="B">Copy B</button>
+                  <button type="button" class="btn btnPrimary" data-use="B">Use B</button>
+                </div>
+              </div>
+
+              <div class="variantCard">
+                <div id="badgeC" class="badge">
+                  <span class="badgeLetter">C</span>
+                  <span class="badgeText">—</span>
+                </div>
+                <textarea id="promptC" class="textarea small" placeholder="Option C prompt..."></textarea>
+                <div class="variantBtns">
+                  <button type="button" class="btn btnSoft" data-copy="C">Copy C</button>
+                  <button type="button" class="btn btnPrimary" data-use="C">Use C</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <footer class="footer">
+            <div class="footerNote">Tip: choosing “no …” in a multi section clears other picks in that section.</div>
+          </footer>
+        </div>
+      </aside>
+    </main>
+
+    <div id="toast" class="toast">Ready ✅</div>
+  </div>
+
+  <script src="./script.js?v=8.0.0"></script>
+</body>
+</html>
+    <script  src="./script.js"></script>
+
+  </body>
+  
+</html>

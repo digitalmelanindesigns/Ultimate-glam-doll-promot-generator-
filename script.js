@@ -5,6 +5,9 @@
    - Clear All truly clears ALL pills (no actives)
    - Reset Defaults restores starter picks
    - Randomize + A/B/C variants
+   UPDATE:
+   - Luxury Editorial preset is INCLUDED (not hidden) + can appear in A/B/C
+   - Shoes: added Crocs-style, Nike-style, Jordan-style + more platform options
 ========================= */
 
 const $ = (sel) => document.querySelector(sel);
@@ -15,6 +18,7 @@ const customPools = {}; // sectionId -> []
 function single(id, label, options, meta={}) { return { id, label, type:"single", options, ...meta }; }
 function multi(id, label, options, meta={}) { return { id, label, type:"multi", options, ...meta }; }
 
+/* ---------- Presets (used by A/B/C randomize) ---------- */
 const PRESETS = [
   {
     badge: "Ultra Polished 3D",
@@ -42,11 +46,19 @@ const PRESETS = [
       render_style:
         "high-detail realistic rendering, editorial lighting, crisp textures, glossy beauty finish, clean premium look"
     }
+  },
+  {
+    badge: "Luxury Editorial",
+    inject: {
+      art_style: "Ultra Polished 3D / CGI Doll Render",
+      image_mode: "Full Color (vibrant glossy finish)",
+      render_style:
+        "high-end luxury editorial campaign aesthetic, cinematic warm spotlight halo, champagne-gold highlights, premium toy-box depth, crisp sharp focus, smooth airbrushed skin, candy-gloss finish, rich dimensional depth, immaculate hands and face, no warped proportions, no distortion, studio-grade product lighting"
+    }
   }
 ];
 
 const SECTIONS = [
-  // UPDATED: added "Little Boy" (only change here)
   single("subject","Subject",[
     "Adult Female","Adult Male","Mature Adult Female","Mature Adult Male",
     "Young Adult Female","Young Adult Male","Teen Girl","Teen Boy",
@@ -138,7 +150,6 @@ const SECTIONS = [
     "pink gloss lips","red statement lip","berry lip stain"
   ],{icon:"💄",hint:"multi",allowCustom:true}),
 
-  // UPDATED: added men + little boy haircut + braid styles (only options changed)
   single("hair_style","Hair Style",[
     "sleek middle part bone straight","deep wave glam","body wave","side part waves",
     "blunt bob","short curly bob","pixie cut","space buns","high ponytail","sleek low ponytail",
@@ -146,7 +157,6 @@ const SECTIONS = [
     "curly fro puff","soft curly afro","knotless box braids","boho braids","braided ponytail",
     "cornrow feed-in braids","fulani braids","passion twists","butterfly locs","locs (bob)","finger waves",
 
-    // MEN haircuts
     "low taper fade","mid taper fade","high taper fade",
     "low fade","mid fade","high fade",
     "skin fade / bald fade","drop fade","burst fade","temple fade",
@@ -156,13 +166,11 @@ const SECTIONS = [
     "high top fade","flat top","sponge curls (coils)","starter locs (short)","freeform locs","two-strand twists (men)",
     "curly top + fade","textured crop + fade","short dreads + taper","braid-out curls",
 
-    // LITTLE BOY haircuts
     "little boy low fade + line-up","little boy mid fade + line-up","little boy high fade + line-up",
     "little boy burst fade","little boy drop fade","little boy taper + curls on top",
     "little boy short afro + taper","little boy buzz cut","little boy Caesar cut",
     "little boy waves + fade","little boy curly top + taper",
 
-    // MEN + LITTLE BOY braid styles
     "straight-back cornrows (men)","stitch braids (men)","feed-in cornrows (men)","pop smoke braids",
     "box braids (men)","medium knotless braids (men)","two braids (men)","four braids (men)",
     "zig-zag cornrows","designer braid pattern","braided mohawk","braids into bun (men)",
@@ -189,59 +197,50 @@ const SECTIONS = [
     "3D nail charms","aura nails","gold foil nails"
   ],{icon:"💅",hint:"1 choice",allowCustom:true}),
 
-  // UPDATED: added men + little boy outfit sets (only options changed)
   single("outfit_set","Outfit Set",[
     "glam streetwear","hoodie and sweatpants set","tracksuit set (no logos)",
     "sparkly mini dress set","business attire set","cozy oversized sweater + leggings set",
     "leather jacket + ripped jeans set","crop top + cargo pants set","silk slip dress + blazer set",
     "denim jacket + shorts set","t-shirt + dark jeans set","no outfit set",
 
-    // MEN sets
     "men's streetwear set","men's hoodie + joggers set","men's tracksuit set (no logos)",
     "men's varsity jacket + jeans set","men's bomber jacket + joggers set",
     "men's fitted tee + jeans set","men's button-up + chinos set",
     "men's suit + dress shirt set","men's blazer + trousers set",
     "men's athletic set (tee + shorts)","men's gym set (tank + shorts)",
 
-    // LITTLE BOY sets
     "little boy casual set (tee + shorts)","little boy hoodie + joggers set",
     "little boy tracksuit set (no logos)","little boy denim jacket + jeans set",
     "little boy polo + shorts set","little boy button-up + chinos set",
     "little boy school outfit set (sweater + pants)","little boy athletic set (tee + shorts)"
   ],{icon:"🧷",hint:"1 choice",allowCustom:true}),
 
-  // UPDATED: added men + little boy tops (only options changed)
   single("top","Top",[
     "corset top","crop top","bodysuit","tank top","tube top","satin blouse","sheer mesh top",
     "off-shoulder sweater","hoodie","cropped hoodie","zip-up hoodie","baby tee",
     "cropped graphic tee (no brand)","graphic tee (no brand)","turtleneck top","button-up blouse",
     "lace bustier","sparkly sequin top","metallic top","halter top",
 
-    // MEN tops
     "men's fitted t-shirt (no brand)","men's oversized t-shirt (no brand)","men's graphic tee (no brand)",
     "men's tank top","men's hoodie","men's zip-up hoodie","men's crewneck sweatshirt",
     "men's polo shirt","men's button-up shirt","men's flannel shirt",
     "men's denim shirt","men's turtleneck sweater","men's athletic tee","men's compression shirt",
 
-    // LITTLE BOY tops
     "little boy t-shirt (no brand)","little boy graphic tee (no brand)","little boy hoodie",
     "little boy zip-up hoodie","little boy crewneck sweatshirt","little boy polo shirt",
     "little boy button-up shirt","little boy sweater","little boy athletic tee"
   ],{icon:"👚",hint:"1 choice",allowCustom:true}),
 
-  // UPDATED: added men + little boy pants/shorts (only options changed)
   single("bottom","Bottom",[
     "skinny jeans","ripped jeans","wide-leg jeans","distressed boyfriend jeans","cargo pants",
     "leather pants","metallic pants","flare pants","leggings","joggers","shorts","biker shorts",
     "mini skirt","pleated skirt","pencil skirt","denim skirt","maxi skirt","satin skirt",
 
-    // MEN bottoms
     "men's slim jeans","men's straight-leg jeans","men's ripped jeans",
     "men's cargo pants","men's joggers","men's sweatpants",
     "men's chinos","men's dress pants","men's tailored trousers",
     "men's athletic shorts","men's cargo shorts","men's denim shorts",
 
-    // LITTLE BOY bottoms
     "little boy jeans","little boy slim jeans","little boy joggers","little boy sweatpants",
     "little boy cargo pants","little boy chinos","little boy dress pants",
     "little boy athletic shorts","little boy cargo shorts","little boy denim shorts"
@@ -253,12 +252,50 @@ const SECTIONS = [
     "long duster jacket","varsity jacket (no logos)","no outerwear"
   ],{icon:"🧥",hint:"1 choice",allowCustom:true}),
 
+  /* =========================
+     SHOES (UPDATED)
+     Added:
+     - Crocs-style clogs
+     - Nike-style + Jordans style (no logos)
+     - More platform cute options
+  ========================= */
   single("shoes","Shoes",[
-    "platform sneakers (no logos)","luxury sneakers (no logos)","high-top sneakers (generic)",
-    "air max style sneakers (generic no logos)","basketball sneakers (generic no logos)",
-    "stiletto heels","strappy heels","block heels","clear heels","open toe sandals","slides",
-    "combat boots","cowboy boots","ankle boots","thigh high boots","ugg style boots (no logos)",
-    "barefoot","no shoes"
+    "platform sneakers (no logos)",
+    "chunky platform sneakers (no logos)",
+    "platform high-top sneakers (no logos)",
+    "luxury sneakers (no logos)",
+    "high-top sneakers (generic)",
+    "air max style sneakers (generic no logos)",
+    "basketball sneakers (generic no logos)",
+    "retro high-top sneakers (no logos)",
+
+    "Nike-style sneakers (no logos)",
+    "Jordan-style high-top sneakers (no logos)",
+
+    "Crocs-style clogs (no logos)",
+    "platform Crocs-style clogs (no logos)",
+    "fuzzy clogs (no logos)",
+
+    "platform heels",
+    "stiletto heels",
+    "strappy heels",
+    "block heels",
+    "clear heels",
+    "platform sandals",
+    "open toe sandals",
+    "platform slides",
+    "slides",
+
+    "combat boots",
+    "platform combat boots",
+    "cowboy boots",
+    "ankle boots",
+    "chunky platform ankle boots",
+    "thigh high boots",
+    "ugg style boots (no logos)",
+
+    "barefoot",
+    "no shoes"
   ],{icon:"👠",hint:"1 choice",allowCustom:true}),
 
   multi("props","Props / Held Items",[
@@ -670,19 +707,26 @@ function setOption(letter, text, badge){
   const badgeEl = $(`#badge${letter} .badgeText`);
   if(badgeEl) badgeEl.textContent = badge || "—";
 }
+
+/* UPDATE: A/B/C pulls randomly from ALL presets (including Luxury) */
 function randomize3Styles(){
   const snap = snapshotState();
-  const A = makeVariant(PRESETS[0]);
-  const B = makeVariant(PRESETS[1]);
-  const C = makeVariant(PRESETS[2]);
+
+  const shuffled = [...PRESETS].sort(() => 0.5 - Math.random());
+  const picks = shuffled.slice(0,3);
+
+  const A = makeVariant(picks[0]);
+  const B = makeVariant(picks[1]);
+  const C = makeVariant(picks[2]);
+
   restoreSnapshot(snap);
 
   renderControls();
   applySearch();
 
-  setOption("A", A, PRESETS[0].badge);
-  setOption("B", B, PRESETS[1].badge);
-  setOption("C", C, PRESETS[2].badge);
+  setOption("A", A, picks[0].badge);
+  setOption("B", B, picks[1].badge);
+  setOption("C", C, picks[2].badge);
 
   toast("A/B/C generated ✨");
 }
